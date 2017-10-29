@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="Student">
+
+    <resultMap id="studentMap" type="Student">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="age" column="age"/>
+    </resultMap>
+
+    <sql id="table">
+        tb_student
+    </sql>
+
+    <sql id="columns">
+        id,
+        <include refid="cols_exclude_id"/>
+    </sql>
+
+    <sql id="cols_exclude_id">
+       name,age
+    </sql>
+
+    <sql id="values">
+        #{name},#{age}
+    </sql>
+
+
+    <select id="list"  resultType="Student">
+        SELECT * FROM tb_user
+    </select>
+
+    <select id="findById" parameterType="long" resultMap="studentMap">
+        SELECT *
+        FROM <include refid="table"/> WHERE id = #{id}
+    </select>
+
+
+</mapper>
