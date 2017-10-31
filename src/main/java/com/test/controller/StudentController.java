@@ -5,6 +5,8 @@ import com.test.event.TestEvent;
 import com.test.model.Student;
 import com.test.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,13 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-/**
- * Created by Intellij IDEA
- * Author: xionggao
- * Desc:
- * Date: 2017/10/29
- * Email: xionggao@terminus.io
- */
+
 @RestController
 @RequestMapping("/api/user")
 public class StudentController {
@@ -61,6 +57,15 @@ public class StudentController {
         
         eventBus.post(TestEvent.builder().id(1L).build());
         System.out.println("post event end....");
+    }
+    
+    /**
+     * 测试下 定时器 job
+     */
+    @Scheduled(cron = "0 */1 * * * ?")
+    @RequestMapping(value = "delta", produces = MediaType.APPLICATION_JSON_VALUE)
+    public void testScheule() {
+        System.out.println(" 一分钟 执行 一次 。。。" );
     }
     
 }

@@ -9,13 +9,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 
-/**
- * Created by Intellij IDEA
- * Author: xionggao
- * Desc:
- * Date: 2017/10/31
- * Email: xionggao@terminus.io
- */
+
 @Slf4j
 @Service
 public class TestListener {

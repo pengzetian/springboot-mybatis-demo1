@@ -7,13 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-/**
- * Created by Intellij IDEA
- * Author: xionggao
- * Desc:
- * Date: 2017/10/29
- * Email: xionggao@terminus.io
- */
+
 @Service
 public class StudentService {
     
