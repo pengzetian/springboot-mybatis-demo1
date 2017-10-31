@@ -1,5 +1,7 @@
 package com.test.controller;
 
+import com.google.common.eventbus.EventBus;
+import com.test.event.TestEvent;
 import com.test.model.Student;
 import com.test.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +23,15 @@ import java.util.List;
 @RequestMapping("/api/user")
 public class StudentController {
     
+    
+    
     @Autowired
     private StudentService studentService;
+    
+    @Autowired
+    private EventBus eventBus;
+    
+    
     
     @GetMapping("test")
     public String test() {
@@ -39,6 +48,19 @@ public class StudentController {
     @GetMapping("/{id}")
     public Student findById(@PathVariable("id") Long id) {
         return studentService.findById(id);
+    }
+    
+    
+    /**
+     * 测试下 抛出事件
+     */
+    @GetMapping("/test-event")
+    public void testEvent() {
+        
+        System.out.println("do some login .." + "start");
+        
+        eventBus.post(TestEvent.builder().id(1L).build());
+        System.out.println("post event end....");
     }
     
 }
