@@ -1,10 +1,15 @@
 package com.test.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.base.Throwables;
 import com.google.common.eventbus.EventBus;
 import com.test.event.TestEvent;
+import com.test.exception.JsonResponseException;
 import com.test.model.Student;
 import com.test.service.StudentService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.MediaType;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-
+@Slf4j
 @RestController
 @RequestMapping("/api/user")
 public class StudentController {
@@ -26,6 +31,11 @@ public class StudentController {
     
     @Autowired
     private EventBus eventBus;
+    
+    @Autowired
+    private StringRedisTemplate stringRedisTemplate;
+    
+    private ObjectMapper objectMapper = new ObjectMapper();
     
     
     
@@ -67,5 +77,46 @@ public class StudentController {
     public void testScheule() {
         System.out.println(" 一分钟 执行 一次 。。。" );
     }
+    
+    
+    /**
+     * 测试 下 redis
+     */
+    @GetMapping("test-redis")
+    public Student testJedis() {
+       
+        Student student = studentService.findById(1L);
+        
+        String json = convertObjectToString(student);
+    
+        stringRedisTemplate.opsForValue().set("student", json);
+        
+        String string = stringRedisTemplate.opsForValue().get("student");
+        
+        System.out.println("string={}" + string);
+        
+        return convertStringToObject(json);
+    }
+    
+    
+    private Student convertStringToObject(String json) {
+        try {
+            return objectMapper.readValue(json, Student.class);
+        } catch (Exception e) {
+            log.error("fail convert String to Object fail cause={}", Throwables.getStackTraceAsString(e));
+            throw new JsonResponseException("convert.String.to.Object.fail");
+        }
+    }
+    
+    private String convertObjectToString(Student student) {
+        try {
+            return objectMapper.writeValueAsString(student);
+        } catch (Exception e) {
+            log.error("convert object to String fail cause={}", Throwables.getStackTraceAsString(e));
+            throw new JsonResponseException("convert.Object.to.String.fail");
+        }
+    }
+   
+    
     
 }

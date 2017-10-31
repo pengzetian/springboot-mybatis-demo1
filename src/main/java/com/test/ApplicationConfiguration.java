@@ -3,9 +3,7 @@ package com.test;
 import com.google.common.eventbus.AsyncEventBus;
 import com.google.common.eventbus.EventBus;
 import com.test.interceptors.TestInterceptor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -31,5 +29,7 @@ public class ApplicationConfiguration {
     public TestInterceptor testInterceptor() {
         return new TestInterceptor();
     }
+    
+    
 
 }
