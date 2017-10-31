@@ -2,6 +2,7 @@ package com.test;
 
 import com.google.common.eventbus.AsyncEventBus;
 import com.google.common.eventbus.EventBus;
+import com.test.interceptors.TestInterceptor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -26,6 +27,9 @@ public class ApplicationConfiguration {
         return new AsyncEventBus(Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() * 2));
     }
     
-    
+    @Bean
+    public TestInterceptor testInterceptor() {
+        return new TestInterceptor();
+    }
 
 }
