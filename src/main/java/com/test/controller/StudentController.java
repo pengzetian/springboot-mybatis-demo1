@@ -24,8 +24,6 @@ import java.util.List;
 @RequestMapping("/api/user")
 public class StudentController {
     
-    
-    
     @Autowired
     private StudentService studentService;
     
